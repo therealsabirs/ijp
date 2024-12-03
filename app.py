@@ -7,7 +7,7 @@ import csv
 from flask import Response
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+#app.secret_key = 'your_secret_key'
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -97,6 +97,7 @@ def hr_dashboard():
     else:
         flash("Unauthorized access!", "danger")
         return redirect(url_for('index'))
+
 
 @app.route('/change_job_status/<int:job_id>/<string:new_status>')
 def change_job_status(job_id, new_status):
@@ -348,11 +349,11 @@ def export_applications(job_id):
 
 
 
-
-
-
-
-
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out.", "info")
+    return redirect(url_for('login'))
 
 
 
@@ -480,14 +481,6 @@ def reset_password():
 
 
 
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
+    

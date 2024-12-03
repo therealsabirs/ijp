@@ -44,9 +44,15 @@
                         <!-- Reset Button (Clear Search Query) -->
                         <button type="button" class="close-button" onclick="clearSearch()">✖</button>
                     </div>
+                    <!--<a href="{{ url_for('logout') }}" class="button is-danger is-small">Logout</a>-->
+
                 </div>
             </form>
-
+            <div class="level-right">
+                <form action="{{ url_for('logout') }}" method="POST">
+                    <a href="{{ url_for('logout') }}" class="button is-danger is-small">Logout</a>
+                </form>
+            </div>
             <h2 class="subtitle">Manage Jobs</h2>
             <table class="table is-fullwidth is-striped is-hoverable">
                 <thead>
