@@ -7,7 +7,7 @@ import csv
 from flask import Response
 
 app = Flask(__name__)
-#app.secret_key = 'your_secret_key'
+app.secret_key = 'your_secret_key'
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
