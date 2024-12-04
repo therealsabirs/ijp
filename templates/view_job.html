@@ -20,6 +20,18 @@
 <body>
     <section class="section">
         <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div>
+                    {% for category, message in messages %}
+                        <div class="notification is-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
             <div class="level-right">
                 <form action="{{ url_for('logout') }}" method="POST">
                     <a href="{{ url_for('logout') }}" class="button is-danger is-small">Logout</a>
@@ -47,7 +59,11 @@
 
                 <p><strong>Last Date to Apply:</strong> {{ job[6] }}</p>
 
-                <a href="/apply/{{ job[0] }}" class="button is-primary is-small">Apply Now</a>
+               <!-- <a href="/apply/{{ job[0] }}" class="button is-primary is-small">Apply Now</a>
+                 Apply Button -->
+<form method="POST">
+    <button type="submit" class="button is-primary is-small">Apply Now</button>
+</form>
             </div>
 
             <!-- Back Button -->

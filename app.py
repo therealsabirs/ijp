@@ -265,7 +265,7 @@ def edit_job(job_id):
         flash("Unauthorized access!", "danger")
         return redirect(url_for('index'))
 
-@app.route('/view_job/<int:job_id>', methods=['GET'])
+'''@app.route('/view_job/<int:job_id>', methods=['GET'])
 def view_job(job_id):
     if 'user_type' in session and session['user_type'] == 'employee':
         conn = connect_db()
@@ -286,7 +286,49 @@ def view_job(job_id):
     else:
         # If user type is not Employee, redirect to the index (login) page
         flash("Unauthorized access!", "danger")
+        return redirect(url_for('index'))'''
+
+
+
+@app.route('/view_job/<int:job_id>', methods=['GET', 'POST'])
+def view_job(job_id):
+    if 'user_type' in session and session['user_type'] == 'employee':
+        conn = connect_db()
+        cur = conn.cursor()
+
+        # Fetch the job details
+        cur.execute("SELECT * FROM jobs WHERE id = %s", (job_id,))
+        job = cur.fetchone()
+
+        if not job:
+            cur.close()
+            conn.close()
+            flash("Job not found!", "danger")
+            return redirect(url_for('employee_dashboard'))
+
+        if request.method == 'POST':
+            employee_id = session['user_id']  # Assuming employee ID is stored in session
+
+            # Check if the employee has already applied for this job
+            cur.execute(
+                "SELECT * FROM applications WHERE employee_id = %s AND job_id = %s",
+                (employee_id, job_id)
+            )
+            application = cur.fetchone()
+
+            if application:
+                flash("You have already applied for this job!", "warning")
+            else:
+                return render_template('view_job.html', job=job)
+
+        cur.close()
+        conn.close()
+        return render_template('view_job.html', job=job)
+    else:
+        # If user type is not Employee, redirect to the index (login) page
+        flash("Unauthorized access!", "danger")
         return redirect(url_for('index'))
+
 
 @app.route('/view_applications/<int:job_id>')
 def view_applications(job_id):
